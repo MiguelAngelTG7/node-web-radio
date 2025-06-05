@@ -2,23 +2,38 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reproductor de Música</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spotify Style Music Player</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="player-container">
-    <h1>🎵 Mi Reproductor</h1>
-    <div id="trackInfo">Cargando...</div>
-    <audio id="player"></audio>
+  <div class="player">
+    <div id="songTitle">Cargando...</div>
+    <audio id="audio" preload="auto"></audio>
+
     <div class="controls">
-      <button id="prevBtn">⏮</button>
-      <button id="playPauseBtn">▶️</button>
-      <button id="stopBtn">⏹</button>
-      <button id="nextBtn">⏭</button>
-      <button id="randomBtn">🔀</button>
+      <button id="prev" title="Anterior">
+        <i class="fas fa-backward"></i>
+      </button>
+      <button id="playPause" title="Reproducir">
+        <i class="fas fa-play"></i>
+      </button>
+      <button id="stop" title="Detener">
+        <i class="fas fa-stop"></i>
+      </button>
+      <button id="next" title="Siguiente">
+        <i class="fas fa-forward"></i>
+      </button>
+      <button id="shuffle" title="Reproducción Aleatoria">
+        <i class="fas fa-random"></i>
+      </button>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

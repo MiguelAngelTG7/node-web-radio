@@ -1,82 +1,102 @@
-const audio = document.getElementById('player');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const stopBtn = document.getElementById('stopBtn');
-const nextBtn = document.getElementById('nextBtn');
-const prevBtn = document.getElementById('prevBtn');
-const randomBtn = document.getElementById('randomBtn');
-const trackInfo = document.getElementById('trackInfo');
+const audio = document.getElementById('audio');
+const songTitle = document.getElementById('songTitle');
+
+const btnPlayPause = document.getElementById('playPause');
+const btnStop = document.getElementById('stop');
+const btnNext = document.getElementById('next');
+const btnPrev = document.getElementById('prev');
+const btnShuffle = document.getElementById('shuffle');
 
 let playlist = [];
 let currentIndex = 0;
-let isRandom = false;
+let isPlaying = false;
+let isShuffle = false;
 
-// Obtener lista
+// Carga la lista de canciones desde el backend o carpeta /music
 fetch('/api/playlist')
   .then(res => res.json())
   .then(files => {
     if (files.length === 0) {
-      alert('No hay canciones en la carpeta /music');
+      songTitle.textContent = 'No hay canciones en la carpeta /music';
       return;
     }
     playlist = files;
-    loadAndPlay(currentIndex);
-    audio.addEventListener('ended', playNext);
+    loadSong(currentIndex);
+  })
+  .catch(() => {
+    songTitle.textContent = 'Error cargando la lista de canciones';
   });
 
-function loadAndPlay(index) {
-  const file = playlist[index];
-  audio.src = `music/${file}`;
-  audio.play();
-  updateTrackInfo(file);
-  updatePlayPauseIcon();
+// Cargar canción y actualizar título
+function loadSong(index) {
+  audio.src = `music/${playlist[index]}`;
+  songTitle.textContent = playlist[index];
 }
 
-function updateTrackInfo(fileName) {
-  trackInfo.textContent = `Reproduciendo: ${fileName}`;
-}
-
-function updatePlayPauseIcon() {
-  playPauseBtn.textContent = audio.paused ? '▶️' : '⏸';
-}
-
-function playNext() {
-  if (isRandom) {
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * playlist.length);
-    } while (newIndex === currentIndex && playlist.length > 1);
-    currentIndex = newIndex;
-  } else {
-    currentIndex = (currentIndex + 1) % playlist.length;
-  }
-  loadAndPlay(currentIndex);
-}
-
-function playPrevious() {
-  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-  loadAndPlay(currentIndex);
-}
-
-// Controles
-playPauseBtn.addEventListener('click', () => {
-  if (audio.paused) {
+// Play o Pause según el estado actual
+function togglePlayPause() {
+  if (!isPlaying) {
     audio.play();
   } else {
     audio.pause();
   }
-  updatePlayPauseIcon();
-});
+}
 
-stopBtn.addEventListener('click', () => {
+audio.onplay = () => {
+  isPlaying = true;
+  btnPlayPause.innerHTML = '<i class="fas fa-pause"></i>';
+  btnPlayPause.title = "Pausar";
+};
+
+audio.onpause = () => {
+  isPlaying = false;
+  btnPlayPause.innerHTML = '<i class="fas fa-play"></i>';
+  btnPlayPause.title = "Reproducir";
+};
+
+btnPlayPause.addEventListener('click', togglePlayPause);
+
+// Stop: pausa y vuelve al inicio
+btnStop.addEventListener('click', () => {
   audio.pause();
   audio.currentTime = 0;
-  updatePlayPauseIcon();
 });
 
-nextBtn.addEventListener('click', playNext);
-prevBtn.addEventListener('click', playPrevious);
+// Siguiente canción
+btnNext.addEventListener('click', () => {
+  if (isShuffle) {
+    currentIndex = Math.floor(Math.random() * playlist.length);
+  } else {
+    currentIndex = (currentIndex + 1) % playlist.length;
+  }
+  loadSong(currentIndex);
+  audio.play();
+});
 
-randomBtn.addEventListener('click', () => {
-  isRandom = !isRandom;
-  randomBtn.classList.toggle('active', isRandom);
+// Canción anterior
+btnPrev.addEventListener('click', () => {
+  if (isShuffle) {
+    currentIndex = Math.floor(Math.random() * playlist.length);
+  } else {
+    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  }
+  loadSong(currentIndex);
+  audio.play();
+});
+
+// Reproducción aleatoria toggle
+btnShuffle.addEventListener('click', () => {
+  isShuffle = !isShuffle;
+  btnShuffle.classList.toggle('active', isShuffle);
+});
+
+// Cuando termina una canción, pasar a la siguiente
+audio.addEventListener('ended', () => {
+  if (isShuffle) {
+    currentIndex = Math.floor(Math.random() * playlist.length);
+  } else {
+    currentIndex = (currentIndex + 1) % playlist.length;
+  }
+  loadSong(currentIndex);
+  audio.play();
 });
