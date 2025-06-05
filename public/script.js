@@ -1,57 +1,82 @@
 const audio = document.getElementById('player');
-const title = document.getElementById('track-title');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const stopBtn = document.getElementById('stopBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const randomBtn = document.getElementById('randomBtn');
+const trackInfo = document.getElementById('trackInfo');
+
 let playlist = [];
 let currentIndex = 0;
-let isShuffle = false;
+let isRandom = false;
 
-function loadTrack(index) {
-  const track = playlist[index];
-  audio.src = `music/${track}`;
-  title.textContent = track;
-}
-
-function playTrack() {
-  audio.play();
-}
-
-function pauseTrack() {
-  audio.pause();
-}
-
-function nextTrack() {
-  currentIndex = isShuffle
-    ? Math.floor(Math.random() * playlist.length)
-    : (currentIndex + 1) % playlist.length;
-  loadTrack(currentIndex);
-  playTrack();
-}
-
-function prevTrack() {
-  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-  loadTrack(currentIndex);
-  playTrack();
-}
-
-function toggleShuffle() {
-  isShuffle = !isShuffle;
-  alert(`Shuffle ${isShuffle ? "enabled" : "disabled"}`);
-}
-
+// Obtener lista
 fetch('/api/playlist')
   .then(res => res.json())
   .then(files => {
-    if (!files.length) {
-      title.textContent = "No tracks found.";
+    if (files.length === 0) {
+      alert('No hay canciones en la carpeta /music');
       return;
     }
     playlist = files;
-    loadTrack(currentIndex);
-
-    audio.addEventListener('ended', nextTrack);
-
-    document.getElementById('play').onclick = playTrack;
-    document.getElementById('pause').onclick = pauseTrack;
-    document.getElementById('next').onclick = nextTrack;
-    document.getElementById('prev').onclick = prevTrack;
-    document.getElementById('shuffle').onclick = toggleShuffle;
+    loadAndPlay(currentIndex);
+    audio.addEventListener('ended', playNext);
   });
+
+function loadAndPlay(index) {
+  const file = playlist[index];
+  audio.src = `music/${file}`;
+  audio.play();
+  updateTrackInfo(file);
+  updatePlayPauseIcon();
+}
+
+function updateTrackInfo(fileName) {
+  trackInfo.textContent = `Reproduciendo: ${fileName}`;
+}
+
+function updatePlayPauseIcon() {
+  playPauseBtn.textContent = audio.paused ? '▶️' : '⏸';
+}
+
+function playNext() {
+  if (isRandom) {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * playlist.length);
+    } while (newIndex === currentIndex && playlist.length > 1);
+    currentIndex = newIndex;
+  } else {
+    currentIndex = (currentIndex + 1) % playlist.length;
+  }
+  loadAndPlay(currentIndex);
+}
+
+function playPrevious() {
+  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  loadAndPlay(currentIndex);
+}
+
+// Controles
+playPauseBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+  updatePlayPauseIcon();
+});
+
+stopBtn.addEventListener('click', () => {
+  audio.pause();
+  audio.currentTime = 0;
+  updatePlayPauseIcon();
+});
+
+nextBtn.addEventListener('click', playNext);
+prevBtn.addEventListener('click', playPrevious);
+
+randomBtn.addEventListener('click', () => {
+  isRandom = !isRandom;
+  randomBtn.classList.toggle('active', isRandom);
+});

@@ -1,29 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spotify-Style Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reproductor de Música</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="player-container">
-    <h1>My Music Player 🎵</h1>
-    <div class="track-info">
-      <span id="track-title">Loading...</span>
-    </div>
-
-    <audio id="player" controls></audio>
-
+    <h1>🎵 Mi Reproductor</h1>
+    <div id="trackInfo">Cargando...</div>
+    <audio id="player"></audio>
     <div class="controls">
-      <button id="prev">⏮</button>
-      <button id="play">▶️</button>
-      <button id="pause">⏸</button>
-      <button id="next">⏭</button>
-      <button id="shuffle">🔀</button>
+      <button id="prevBtn">⏮</button>
+      <button id="playPauseBtn">▶️</button>
+      <button id="stopBtn">⏹</button>
+      <button id="nextBtn">⏭</button>
+      <button id="randomBtn">🔀</button>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
