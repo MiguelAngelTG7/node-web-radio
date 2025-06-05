@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reproductor MP3</title>
+</head>
+<body>
+  <h1>Reproductor MP3</h1>
+
+  <audio id="player" controls></audio>
+
+  <div>
+    <button onclick="prevSong()">⏮️ Anterior</button>
+    <button onclick="playSong()">▶️ Play</button>
+    <button onclick="pauseSong()">⏸️ Pausa</button>
+    <button onclick="stopSong()">⏹️ Stop</button>
+    <button onclick="nextSong()">⏭️ Siguiente</button>
+    <button onclick="toggleRandom()">🔀 Aleatorio: <span id="randomStatus">OFF</span></button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
