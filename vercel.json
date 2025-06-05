@@ -1,18 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    {
-      "src": "/api/playlist",
-      "dest": "api/playlist.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/playlist",
