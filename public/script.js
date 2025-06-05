@@ -1,62 +1,57 @@
 const audio = document.getElementById('player');
+const title = document.getElementById('track-title');
 let playlist = [];
 let currentIndex = 0;
-let isRandom = false;
+let isShuffle = false;
 
-function playSong() {
+function loadTrack(index) {
+  const track = playlist[index];
+  audio.src = `music/${track}`;
+  title.textContent = track;
+}
+
+function playTrack() {
   audio.play();
 }
 
-function pauseSong() {
+function pauseTrack() {
   audio.pause();
 }
 
-function stopSong() {
-  audio.pause();
-  audio.currentTime = 0;
+function nextTrack() {
+  currentIndex = isShuffle
+    ? Math.floor(Math.random() * playlist.length)
+    : (currentIndex + 1) % playlist.length;
+  loadTrack(currentIndex);
+  playTrack();
 }
 
-function nextSong() {
-  if (isRandom) {
-    currentIndex = Math.floor(Math.random() * playlist.length);
-  } else {
-    currentIndex = (currentIndex + 1) % playlist.length;
-  }
-  loadAndPlay();
+function prevTrack() {
+  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  loadTrack(currentIndex);
+  playTrack();
 }
 
-function prevSong() {
-  if (isRandom) {
-    currentIndex = Math.floor(Math.random() * playlist.length);
-  } else {
-    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-  }
-  loadAndPlay();
-}
-
-function toggleRandom() {
-  isRandom = !isRandom;
-  document.getElementById('randomStatus').textContent = isRandom ? 'ON' : 'OFF';
-}
-
-function loadAndPlay() {
-  audio.src = `music/${playlist[currentIndex]}`;
-  audio.play();
+function toggleShuffle() {
+  isShuffle = !isShuffle;
+  alert(`Shuffle ${isShuffle ? "enabled" : "disabled"}`);
 }
 
 fetch('/api/playlist')
   .then(res => res.json())
   .then(files => {
     if (!files.length) {
-      alert('No hay canciones en la carpeta /music');
+      title.textContent = "No tracks found.";
       return;
     }
-
     playlist = files;
-    loadAndPlay();
+    loadTrack(currentIndex);
 
-    audio.addEventListener('ended', nextSong);
-  })
-  .catch(err => {
-    console.error('Error al obtener la playlist:', err);
+    audio.addEventListener('ended', nextTrack);
+
+    document.getElementById('play').onclick = playTrack;
+    document.getElementById('pause').onclick = pauseTrack;
+    document.getElementById('next').onclick = nextTrack;
+    document.getElementById('prev').onclick = prevTrack;
+    document.getElementById('shuffle').onclick = toggleShuffle;
   });

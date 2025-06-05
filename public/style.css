@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+.player-container {
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+  width: 90%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: #1DB954;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.track-info {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+audio {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.controls button {
+  background-color: #1DB954;
+  border: none;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  min-width: 50px;
+}
+
+.controls button:hover {
+  background-color: #17a74a;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .player-container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .controls button {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .track-info {
+    font-size: 0.9em;
+  }
+}
