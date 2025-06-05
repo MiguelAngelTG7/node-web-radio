@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import { parseFile } from 'music-metadata';
+const fs = require('fs');
+const path = require('path');
+const mm = require('music-metadata');
 
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
   const musicDir = path.join(process.cwd(), 'public', 'music');
   try {
     const files = fs.readdirSync(musicDir).filter(f => f.endsWith('.mp3'));
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     const tracks = await Promise.all(
       files.map(async (file) => {
         const filePath = path.join(musicDir, file);
-        const metadata = await parseFile(filePath);
+        const metadata = await mm.parseFile(filePath);
         const common = metadata.common;
 
         let pictureBase64 = null;
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(tracks);
   } catch (err) {
-    console.error(err);
+    console.error('Error reading metadata:', err);
     res.status(500).json({ error: 'Error loading music files.' });
   }
-}
+};
