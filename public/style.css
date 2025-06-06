@@ -1,3 +1,4 @@
+/* Estilo general del cuerpo */
 body {
   margin: 0;
   padding: 0;
@@ -12,56 +13,92 @@ body {
   text-align: center;
 }
 
+/* Contenedor del reproductor */
 .player-container {
   background-color: #1e1e1e;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   width: 90%;
   max-width: 400px;
   box-sizing: border-box;
 }
 
+/* Título */
 h1 {
   color: #1DB954;
   margin-bottom: 20px;
   font-size: 1.8em;
 }
 
+/* Info de la canción */
 .track-info {
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 1em;
-}
-
-audio {
-  width: 100%;
   margin-bottom: 20px;
 }
 
+.track-info img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#song-title {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#song-artist,
+#song-album {
+  font-size: 0.95em;
+  color: #ccc;
+}
+
+/* Estilo del reproductor de audio */
+audio {
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Controles */
 .controls {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 
+/* Botones */
 .controls button {
-  background-color: #1DB954;
+  background-color: #ffffff;
+  color: #121212;
   border: none;
   padding: 12px;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.2s ease;
   min-width: 50px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Hover y active */
 .controls button:hover {
-  background-color: #17a74a;
+  background-color: #e6e6e6;
 }
 
-/* Responsive tweaks */
+.controls button:active {
+  transform: scale(0.95);
+  background-color: #d4d4d4;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
 @media (max-width: 480px) {
   .player-container {
     padding: 20px;
@@ -73,23 +110,17 @@ audio {
 
   .controls button {
     padding: 10px;
-    font-size: 16px;
+    font-size: 18px;
+    min-width: 45px;
+    min-height: 45px;
   }
 
-  .track-info {
-    font-size: 0.9em;
+  #song-title {
+    font-size: 1.1em;
   }
-} 
-.controls button:active {
-  transform: scale(0.95);
-  background-color: #ffffff;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
-}
 
-button.toggle-play::before {
-  content: '▶';
-}
-
-button.toggle-play.playing::before {
-  content: '⏸';
+  #song-artist,
+  #song-album {
+    font-size: 0.85em;
+  }
 }
