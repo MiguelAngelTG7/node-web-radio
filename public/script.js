@@ -32,7 +32,7 @@ function prevTrack() {
 function toggleShuffle() {
   isShuffle = !isShuffle;
   const shuffleBtn = document.getElementById('shuffle');
-  shuffleBtn.style.backgroundColor = isShuffle ? '#e0e0e0' : '#ffffff'; // blanco oscuro o normal
+  shuffleBtn.style.backgroundColor = isShuffle ? '#858383' : '#ffffff'; // blanco oscuro o normal
 }
 
 // ✅ Carga la playlist desde la API
