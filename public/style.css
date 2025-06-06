@@ -124,3 +124,16 @@ audio {
     font-size: 0.85em;
   }
 }
+.controls button:active {
+  transform: scale(0.95);
+  background-color: #14833b;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+button.toggle-play::before {
+  content: '▶️';
+}
+
+button.toggle-play.playing::before {
+  content: '⏸';
+}
