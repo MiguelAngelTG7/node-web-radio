@@ -137,3 +137,25 @@ button.toggle-play::before {
 button.toggle-play.playing::before {
   content: '⏸';
 }
+
+/* Animación tipo latido */
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.04); }
+  50%  { transform: scale(1); }
+  75%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+#cover {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+#cover.heartbeat {
+  animation: heartbeat 2s infinite ease-in-out;
+}
