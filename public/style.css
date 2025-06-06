@@ -87,7 +87,7 @@ audio {
 }
 
 button.toggle-play::before {
-  content: '▶️';
+  content: '▶';
 }
 
 button.toggle-play.playing::before {
